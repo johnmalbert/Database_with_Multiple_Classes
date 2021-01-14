@@ -1,0 +1,83 @@
+python manage.py makemigrations
+
+python manage.py migrate
+
+python manage.py shell
+
+#################################################
+WITHIN shell
+#################################################
+Import models
+>>> from dojo_ninjas_app.models import *
+
+Check to see if it worked
+>>> Dojos
+
+Create 3 objects
+>>> Dojos.objects.create(name="Northwest", city="Seattle", state="Washington")
+>>> Dojos.objects.create(name="Midwest", city="Denver", state="Colorado")
+>>> Dojos.objects.create(name="East", city="New York", state="New York")
+
+Delete those three dojos:
+>>> delete_dojo = Dojos.objects.get(id=1)
+>>> delete_dojo.delete()
+
+>>> delete_dojo = Dojos.objects.get(id=2)
+>>> delete_dojo.delete()
+
+>>> delete_dojo = Dojos.objects.get(id=3)
+>>> delete_dojo.delete()
+
+Check:
+>>> Dojos.objects.all()
+
+Create 3 more dojos:
+>>> Dojos.objects.create(name="Northwest", city="Seattle", state="Washington")
+>>> Dojos.objects.create(name="Midwest", city="Denver", state="Colorado")
+>>> Dojos.objects.create(name="East", city="New York", state="New York")
+
+Create 3 Ninjas that belong to each Dojos: my_book = Book.objects.create(title="Little Women", author=Author.objects.get(id=2))
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=4),first_name="John",last_name="Albert")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=4),first_name="Vesper",last_name="Pony")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=4),first_name="Erin",last_name="Fujita")
+
+Create 3 Ninjas that belong to second Dojo:
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=5),first_name="Brad",last_name="Chad")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=5),first_name="Terry",last_name="Trick")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=5),first_name="Stan",last_name="Musial")
+
+Create 3 Ninjas that belong to the third dojo:
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=6),first_name="Ted",last_name="Williams")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=6),first_name="Derek",last_name="Jeter")
+>>> Ninjas.objects.create(dojo_id=Dojos.objects.get(id=6),first_name="Tony",last_name="Gwynn")
+
+Retrieve the ninjas that belong to the first Dojo
+>>> this_dojo = Dojos.objects.get(id=4)
+>>> ninjas = Ninjas.objects.filter(dojo_id=this_dojo)
+
+Retrieve the ninjas that belong to the last Dojo
+>>> this_dojo = Dojos.objects.get(id=6)
+>>> ninjas = Ninjas.objects.filter(dojo_id=this_dojo)
+>>> ninjas
+
+Retrieve the last ninjas dojo:
+>>> last_ninja = Ninjas.objects.get(id=9)
+>>> last_ninja.dojo_id.name
+
+Add field description to Dojos:
+(added line 8 to models.py, desc = models.CharField(max_length = 255))
+
+cmd line:
+python manage.py makemigrations
+1
+"Not Applicable"
+python manage.py migrate
+python manage.py shell
+
+##########################################
+WITHIN shell
+##########################################
+>>> from dojo_ninjas_app.model import *
+
+Create a new dojo:
+>>> Dojos.objects.create(name="Southeast", city="Miami", state="Florida", desc="The newest Dojo")

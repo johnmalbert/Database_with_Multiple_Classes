@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dojos and Ninjas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://use.fontawesome.com/fe0b1ed089.js"></script>
+    <style>
+        i {
+            padding: 5px;
+        }
+
+        h3 {
+            margin-right: -75px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar justify-space-between align-middle bg-dark">
+        <a href="#"><button class="btn btn-primary">Refresh Page</button></a>
+        <h3 style="color: white;">Dojos and Ninjas</h3>
+        <p style="margin: 10px; color: white;">
+            About Me:
+            <a href="https://www.github.com/johnmalbert"><i class="fa fa-github" aria-hidden="true"></i></a>
+            <a href="https://www.linkedin.com/in/john-m-albert/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a href="https://www.instagram.com/chasethealberts"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+        </p>
+    </div>
+    <main>
+        <div class="container bg-light text-center p-5">
+            <div class="row p-3">
+                <div class="col border bg-info p-3 m-1">
+                    <h1>Create a Dojo</h1>
+                    <form action="/create_dojo" method="POST">
+                        {% csrf_token %}
+                        <div class="row p-3">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Dojo Name" name="name">
+                            </div>
+                        </div>
+                        <div class="row p-3">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="City" name="city">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="State" name="state">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary m-4">Create Dojo</button>
+                        {% if request.session.error1 %}
+                        <p>Missing information, please try again</p>
+                        {% endif %}
+                    </form>
+                </div>
+                <div class="col border bg-success p-3 m-1">
+                    <h1>Create a Ninja</h1>
+                    <form action="/create_ninja" method="POST">
+                        {% csrf_token %}
+                        <div class="row p-3">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="First name" name="first_name">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Last name" name="last_name">
+                            </div>
+                        </div>
+                        <div class="row justify-content-md-center p-3">
+                            <div class="col-md-4">
+                                <select class="custom-select" name="dojo_id" id="dojo_id" aria-placeholder="Dojo">
+                                    <option selected>Dojo ID</option>
+                                    {% for obj in all_dojos %}
+                                    <option value="{{obj.id}}">{{obj.id}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary m-4">Create Ninja</button>
+                        {% if request.session.error2 %}
+                        <h5>Missing information, please try again</h5>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row justify-content-md-center text-left mb-5">
+                <div class="col-md-4 border">
+                    <h4 style="margin-left: 25%;">Dojo's Ninjas:</h4>
+                    <ul>
+                        {% for obj in all_dojos %}
+                        <li><b> Ninjas at the {{obj.name}} Dojo: </b>
+                            <ul>
+                                {% for ninja in obj.ninjas.all %}
+                                <li><em>{{ninja.first_name}} {{ninja.last_name}}</em></li>
+                                {% endfor %}
+                                <a href="/{{obj.id}}"> Delete This Dojo</a>
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered mb-5 text-center">
+                <h1>Dojo Table</h1>
+                <thead>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">City</th>
+                    <th scope="col">State</th>
+                </thead>
+                <tbody>
+                    {% for obj in all_dojos %}
+                    <tr>
+                        <th scope="row">{{obj.id}}</th>
+                        <td>{{obj.name}}</td>
+                        <td>{{obj.city}}</td>
+                        <td>{{obj.state}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="table table-striped table-bordered mb-5 text-center">
+                <h1>Ninja Table</h1>
+                <thead>
+                    <th scope="col">ID</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Dojo Name</th>
+                </thead>
+                <tbody>
+                    {% for obj in all_ninjas %}
+                    <tr>
+                        <th scope="row">{{obj.id}}</th>
+                        <td>{{obj.first_name}}</td>
+                        <td>{{obj.last_name}}</td>
+                        <td>{{obj.dojo_id.name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>
